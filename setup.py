@@ -7,8 +7,12 @@ from yapps import __version__ as version
 pkg_root = os.path.dirname(__file__)
 
 # Error-handling here is to allow package to be built w/o README included
-try: readme = open(os.path.join(pkg_root, 'README.txt')).read()
-except IOError: readme = ''
+try:
+    with open(os.path.join(pkg_root, 'README.txt')) as readme_file:
+        readme = readme_file.read()
+except IOError:
+    readme = ''
+
 
 setup(
     name = 'Yapps2',
@@ -29,4 +33,11 @@ setup(
     exclude_package_data = {'': ['README.*']},
 
     entry_points = dict(console_scripts=[
-        'yapps2 = yapps.cli_tool:main' ]) )
+        'yapps2 = yapps.cli_tool:main' ]),
+
+    extras_require = {
+        'dev': [
+            'pytest==5.1.2',
+            'tox==3.14.0'
+        ]}
+)
