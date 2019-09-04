@@ -1,6 +1,8 @@
 YAPPS: Yet Another Python Parser System
 ----------------------------------------
 
+![Build status](https://travis-ci.org/smurfix/yapps.svg?branch=master)
+
 For the most complete and excellent documentation (e.g. [manual with
 examples](http://theory.stanford.edu/~amitp/yapps/yapps2/manual/)) and info,
 please see original project website: http://theory.stanford.edu/~amitp/yapps/
