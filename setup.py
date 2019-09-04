@@ -15,10 +15,10 @@ setup(
     version = version,
     author = 'Amit J. Patel, Matthias Urlichs',
     author_email = 'amitp@cs.stanford.edu, smurf@debian.org',
-    maintainer = 'Mike Kazantsev',
-    maintainer_email = 'mk.fraggod@gmail.com',
+    maintainer = 'Matthias Urlichs',
+    maintainer_email = 'smurf@debian.org',
     license = 'MIT',
-    url = 'https://github.com/mk-fg/yapps',
+    url = 'https://github.com/smurfix/yapps',
 
     description = 'Yet Another Python Parser System',
     long_description = readme,
