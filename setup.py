@@ -38,6 +38,7 @@ setup(
     extras_require = {
         'dev': [
             'pytest==5.1.2',
+            'pytest-cov==2.7.1',
             'tox==3.14.0'
         ]}
 )
