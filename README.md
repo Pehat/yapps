@@ -38,7 +38,7 @@ installed from a checkout with something like that:
 Better way would be to use [pip](http://pip-installer.org/) to install all the
 necessary dependencies as well:
 
-	% pip install 'git+https://github.com/mk-fg/yapps.git#egg=yapps'
+	% pip install 'git+https://github.com/smurfix/yapps.git#egg=yapps'
 
 Note that to install stuff in system-wide PATH and site-packages, elevated
 privileges are often required.
