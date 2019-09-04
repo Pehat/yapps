@@ -39,6 +39,7 @@ setup(
         'dev': [
             'pytest==5.1.2',
             'pytest-cov==2.7.1',
+            'python-coveralls==2.9.3',
             'tox==3.14.0'
         ]}
 )
