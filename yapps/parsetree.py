@@ -290,11 +290,11 @@ class Node(object):
         self.rule = rule  # name of the rule containing this node
         self.first = []
         self.follow = []
-        self.accepts_epsilon = 0
+        self.accepts_epsilon = False
 
     def setup(self, gen):
         # Setup will change accepts_epsilon,
-        # sometimes from 0 to 1 but never 1 to 0.
+        # sometimes from False to True but never True to False.
         # It will take a finite number of steps to set things up
         pass
 
@@ -322,7 +322,7 @@ class Terminal(Node):
     def __init__(self, rule, token):
         Node.__init__(self, rule)
         self.token = token
-        self.accepts_epsilon = 0
+        self.accepts_epsilon = False
 
     def __str__(self):
         return self.token
@@ -348,7 +348,7 @@ class Eval(Node):
     def setup(self, gen):
         Node.setup(self, gen)
         if not self.accepts_epsilon:
-            self.accepts_epsilon = 1
+            self.accepts_epsilon = True
             gen.changed()
 
     def __str__(self):
@@ -409,7 +409,7 @@ class Sequence(Node):
                 if not c.accepts_epsilon:
                     break
             else:
-                self.accepts_epsilon = 1
+                self.accepts_epsilon = True
                 gen.changed()
 
     def get_children(self):
@@ -464,7 +464,7 @@ class Choice(Node):
         if not self.accepts_epsilon:
             for c in self.children:
                 if c.accepts_epsilon:
-                    self.accepts_epsilon = 1
+                    self.accepts_epsilon = True
                     gen.changed()
 
     def get_children(self):
@@ -564,7 +564,7 @@ class Option(Wrapper):
     def setup(self, gen):
         Wrapper.setup(self, gen)
         if not self.accepts_epsilon:
-            self.accepts_epsilon = 1
+            self.accepts_epsilon = True
             gen.changed()
 
     def __str__(self):
@@ -622,7 +622,7 @@ class Star(Wrapper):
     def setup(self, gen):
         Wrapper.setup(self, gen)
         if not self.accepts_epsilon:
-            self.accepts_epsilon = 1
+            self.accepts_epsilon = True
             gen.changed()
 
     def __str__(self):
