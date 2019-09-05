@@ -19,6 +19,10 @@ keeps track of the parse stack.
 
 from __future__ import print_function
 import sys, re
+import logging
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
 
 MIN_WINDOW=4096
 # File lookup window
@@ -175,7 +179,7 @@ class Scanner(object):
         file,line,p = pos
         if file != self.filename:
             if self.stack: return self.stack.print_line_with_pointer(pos,length=length,out=out)
-            print >>out, "(%s: not in input buffer)" % file
+            print("(%s: not in input buffer)" % file, file=out)
             return
 
         text = self.input
@@ -198,7 +202,7 @@ class Scanner(object):
                     break
                 spos = cr+1
         else:
-            print >>out, "(%s:%d not in input buffer)" % (file,origline)
+            print("(%s:%d not in input buffer)" % (file,origline), file=out)
             return
 
         # Now try printing part of the line
@@ -227,8 +231,8 @@ class Scanner(object):
             p = p - 7
 
         # Now print the string, along with an indicator
-        print >>out, '> ',text
-        print >>out, '> ',' '*p + '^'
+        print('> ',text, file=out)
+        print('> ',' '*p + '^', file=out)
 
     def grab_input(self):
         """Get more input if possible."""
@@ -316,7 +320,6 @@ class Scanner(object):
                     del self.tokens[0]
                 self.tokens.append(tok)
                 self.last_read_token = tok
-                # print repr(tok)
                 return tok
             else:
                 ignore = self.ignore[best_pat]
@@ -415,14 +418,14 @@ def print_error(err, scanner, max_ctx=None):
         pos = scanner.get_pos()
 
     file_name, line_number, column_number = pos
-    print('%s:%d:%d: %s' % (file_name, line_number, column_number, err.msg), file=sys.stderr)
+    logger.error('%s:%d:%d: %s', file_name, line_number, column_number, err.msg)
 
     scanner.print_line_with_pointer(pos)
 
     context = err.context
     token = None
     while context:
-        print('while parsing %s%s:' % (context.rule, tuple(context.args)), file=sys.stderr)
+        logger.error('while parsing %s%s:' % context.rule, tuple(context.args))
         if context.token:
             token = context.token
         if token:
@@ -439,5 +442,5 @@ def wrap_error_reporter(parser, rule, *args,**kw):
     except SyntaxError as e:
         print_error(e, parser._scanner)
     except NoMoreTokens:
-        print('Could not complete parsing; stopped around here:', file=sys.stderr)
-        print(parser._scanner, file=sys.stderr)
+        logger.error('Could not complete parsing; stopped around here:')
+        logger.error(parser._scanner)
