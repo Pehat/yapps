@@ -3,7 +3,7 @@ globalvars = {}       # We will store the calculator's variables here
 def lookup(map, name):
     for x,v in map:  
         if x == name: return v
-    if not globalvars.has_key(name): print 'Undefined (defaulting to 0):', name
+    if not globalvars.has_key(name): print('Undefined (defaulting to 0): %s' % name)
     return globalvars.get(name, 0)
 
 def stack_input(scanner,ign):
@@ -20,10 +20,10 @@ parser Calculator:
     token VAR: "[a-zA-Z_]+"
 
     # Each line can either be an expression or an assignment statement
-    rule goal:   expr<<[]>> END            {{ print '=', expr }}
+    rule goal:   expr<<[]>> END            {{ print('= %s' % expr) }}
                                            {{ return expr }}
                | "set" VAR expr<<[]>> END  {{ globalvars[VAR] = expr }}
-                                           {{ print VAR, '=', expr }}
+                                           {{ print("%s = %s" % (VAR, expr)) }}
                                            {{ return expr }}
 
     # An expression is the sum and difference of factors
@@ -47,10 +47,10 @@ parser Calculator:
                  "in" expr<<V>>           {{ return expr }}
 %%
 if __name__=='__main__':
-    print 'Welcome to the calculator sample for Yapps 2.'
-    print '  Enter either "<expression>" or "set <var> <expression>",'
-    print '  or just press return to exit.  An expression can have'
-    print '  local variables:  let x = expr in expr'
+    print('Welcome to the calculator sample for Yapps 2.')
+    print('  Enter either "<expression>" or "set <var> <expression>",')
+    print('  or just press return to exit.  An expression can have')
+    print('  local variables:  let x = expr in expr')
     # We could have put this loop into the parser, by making the
     # `goal' rule use (expr | set var expr)*, but by putting the
     # loop into Python code, we can make it interactive (i.e., enter
@@ -60,5 +60,5 @@ if __name__=='__main__':
         except EOFError: break
         if not s.strip(): break
         parse('goal', s)
-    print 'Bye.'
+    print('Bye.')
 

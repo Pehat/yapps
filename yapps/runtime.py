@@ -17,7 +17,6 @@ keeps track of the parse stack.
 
 """
 
-from __future__ import print_function
 import sys, re
 import logging
 
@@ -152,9 +151,6 @@ class Scanner(object):
             else:
                 filename = "<str_%d>" % filename
 
-#			self.stack = object.__new__(self.__class__)
-#			Scanner.__init__(self.stack,self.patterns,self.ignore,input,file,filename, stacked=True)
-
             # Note that the pattern+ignore are added by the generated
             # scanner code
             self.stack = self.__class__(input,file,filename, stacked=True)
@@ -165,12 +161,6 @@ class Scanner(object):
 
         return (self.filename, self.line+self.del_line, self.col)
 
-#	def __repr__(self):
-#		"""Print the last few tokens that have been scanned in"""
-#		output = ''
-#		for t in self.tokens:
-#			output += '%s\n' % (repr(t),)
-#		return output
 
     def print_line_with_pointer(self, pos, length=0, out=sys.stderr):
         """Print the line of 'text' that includes position 'p',
@@ -179,7 +169,8 @@ class Scanner(object):
         file,line,p = pos
         if file != self.filename:
             if self.stack: return self.stack.print_line_with_pointer(pos,length=length,out=out)
-            print("(%s: not in input buffer)" % file, file=out)
+            # TODO: double-check!
+            out.write("(%s: not in input buffer)\n" % file)
             return
 
         text = self.input
@@ -202,7 +193,7 @@ class Scanner(object):
                     break
                 spos = cr+1
         else:
-            print("(%s:%d not in input buffer)" % (file,origline), file=out)
+            out.write("(%s:%d not in input buffer)\n" % (file, origline))
             return
 
         # Now try printing part of the line
@@ -231,8 +222,8 @@ class Scanner(object):
             p = p - 7
 
         # Now print the string, along with an indicator
-        print('> ',text, file=out)
-        print('> ',' '*p + '^', file=out)
+        out.write('> %s\n' % text)
+        out.write('> %s\n' % (' ' * p + '^'))
 
     def grab_input(self):
         """Get more input if possible."""

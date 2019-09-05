@@ -54,13 +54,13 @@ if __name__ == '__main__':
              '<begin> middle </end>',
              '<begin> <nested attr=\'baz\' another="hey"> foo </nested> <nested> bar </nested> </begin>',
             ]
-    print
-    print '____Running tests_______________________________________'
+    print()
+    print('____Running tests_______________________________________')
     for test in tests:
-        print
+        print()
         try:
             parser = xml(xmlScanner(test))
             output = '%s ==> %s' % (repr(test), repr(parser.node()))
         except (yappsrt.SyntaxError, AssertionError) as e:
             output = '%s ==> FAILED ==> %s' % (repr(test), e)
-        print output
+        print(output)
